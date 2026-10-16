@@ -1,0 +1,35 @@
+html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My YT GIF App</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background: #f0f0f0; padding: 50px; }
+        .box { background: white; padding: 30px; border-radius: 10px; display: inline-block; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        input { padding: 10px; width: 300px; border: 1px solid #ccc; border-radius: 5px; }
+        button { padding: 10px 20px; background: #ff0000; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #cc0000; }
+    </style>
+</head>
+<body>
+
+    <div class="box">
+        <h1>YouTube to GIF Maker 🎬</h1>
+        <p>Paste your YouTube link below:</p>
+        <input type="text" id="ytUrl" placeholder="https://youtube.com...">
+        <button onclick="startLoading()">Load Video</button>
+        <div id="status" style="margin-top: 20px; color: gray;"></div>
+    </div>
+
+    <script>
+        function startLoading() {
+            let url = document.getElementById('ytUrl').value;
+            if(url === "") {
+                alert("Please paste a link first!");
+            } else {
+                document.getElementById('status').innerText = "Connecting to video... (We will program this part next!)";
+            }
+        }
+    </script>
+</body>
+</html>
