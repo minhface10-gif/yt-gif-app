@@ -22,7 +22,7 @@
             <button onclick="startLoading()">Load Video</button>
         </div>
         
-        <div id="status" style="color: gray; font-weight: bold;"></div>
+        <div id="status" style="color: gray; font-weight: bold; margin-bottom: 10px;"></div>
 
         <div id="videoContainer" class="video-container">
             <h3>Your Video Preview:</h3>
@@ -32,7 +32,7 @@
 
     <script>
         function startLoading() {
-            let url = document.getElementById('ytUrl').value;
+            let url = document.getElementById('ytUrl').value.trim();
             let statusDiv = document.getElementById('status');
             let videoContainer = document.getElementById('videoContainer');
             let playerDiv = document.getElementById('player');
@@ -42,12 +42,18 @@
                 return;
             }
 
-            // This logic automatically grabs the video ID from your YouTube link
             let videoId = "";
+            
+            // Fixed Link Finder Logic (Supports regular links, short links, and shorts!)
             if (url.includes("://youtube.com")) {
-                videoId = url.split("v=")[1].split("&")[0];
+                let parts = url.split("v=");
+                videoId = parts[1].split("&")[0];
             } else if (url.includes("youtu.be/")) {
-                videoId = url.split("youtu.be/")[1].split("?")[0];
+                let parts = url.split("youtu.be/");
+                videoId = parts[1].split("?")[0];
+            } else if (url.includes("://youtube.com")) {
+                let parts = url.split("shorts/");
+                videoId = parts[1].split("?")[0];
             }
 
             if (videoId !== "") {
