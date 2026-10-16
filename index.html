@@ -1,14 +1,15 @@
-html
 <!DOCTYPE html>
 <html>
 <head>
     <title>My YT GIF App</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; background: #f0f0f0; padding: 50px; }
-        .box { background: white; padding: 30px; border-radius: 10px; display: inline-block; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        input { padding: 10px; width: 300px; border: 1px solid #ccc; border-radius: 5px; }
-        button { padding: 10px 20px; background: #ff0000; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .box { background: white; padding: 30px; border-radius: 10px; display: inline-block; box-shadow: 0 4px 8px rgba(0,0,0,0.1); max-width: 500px; width: 100%; }
+        input { padding: 10px; width: 65%; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        button { padding: 10px 20px; background: #ff0000; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; width: 30%; }
         button:hover { background: #cc0000; }
+        .video-container { margin-top: 20px; display: none; }
+        iframe { width: 100%; height: 280px; border-radius: 5px; border: none; }
     </style>
 </head>
 <body>
@@ -16,18 +17,46 @@ html
     <div class="box">
         <h1>YouTube to GIF Maker 🎬</h1>
         <p>Paste your YouTube link below:</p>
-        <input type="text" id="ytUrl" placeholder="https://youtube.com...">
-        <button onclick="startLoading()">Load Video</button>
-        <div id="status" style="margin-top: 20px; color: gray;"></div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <input type="text" id="ytUrl" placeholder="https://youtube.com...">
+            <button onclick="startLoading()">Load Video</button>
+        </div>
+        
+        <div id="status" style="color: gray; font-weight: bold;"></div>
+
+        <div id="videoContainer" class="video-container">
+            <h3>Your Video Preview:</h3>
+            <div id="player"></div>
+        </div>
     </div>
 
     <script>
         function startLoading() {
             let url = document.getElementById('ytUrl').value;
+            let statusDiv = document.getElementById('status');
+            let videoContainer = document.getElementById('videoContainer');
+            let playerDiv = document.getElementById('player');
+
             if(url === "") {
                 alert("Please paste a link first!");
+                return;
+            }
+
+            // This logic automatically grabs the video ID from your YouTube link
+            let videoId = "";
+            if (url.includes("://youtube.com")) {
+                videoId = url.split("v=")[1].split("&")[0];
+            } else if (url.includes("youtu.be/")) {
+                videoId = url.split("youtu.be/")[1].split("?")[0];
+            }
+
+            if (videoId !== "") {
+                statusDiv.innerText = "Video loaded successfully! 🎉";
+                playerDiv.innerHTML = `<iframe src="https://youtube.com{videoId}" allowfullscreen></iframe>`;
+                videoContainer.style.display = "block";
             } else {
-                document.getElementById('status').innerText = "Connecting to video... (We will program this part next!)";
+                statusDiv.innerText = "❌ Invalid YouTube link. Please check your URL!";
+                videoContainer.style.display = "none";
             }
         }
     </script>
